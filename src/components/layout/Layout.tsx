@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -11,6 +11,19 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Set sidebar state based on mobile detection
+    setIsSidebarOpen(!isMobile);
+    
+    // Simulate loading state
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, [isMobile]);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -26,7 +39,14 @@ const Layout = ({ children }: LayoutProps) => {
             isMobile ? "ml-0" : (isSidebarOpen ? "ml-64" : "ml-0")
           }`}
         >
-          {children}
+          {isLoading ? (
+            <div className="animate-pulse space-y-4">
+              <div className="h-6 bg-muted rounded w-1/4 mb-8"></div>
+              <div className="h-[400px] bg-muted rounded w-full"></div>
+            </div>
+          ) : (
+            children
+          )}
         </main>
       </div>
     </div>

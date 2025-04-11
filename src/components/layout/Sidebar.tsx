@@ -13,32 +13,41 @@ import {
   X 
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Link, useLocation } from "react-router-dom";
 
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-interface SidebarItem {
+interface SidebarItemProps {
   icon: React.ReactNode;
   label: string;
+  to: string;
   isActive?: boolean;
+  onClick?: () => void;
 }
 
-const SidebarItem = ({ icon, label, isActive = false }: SidebarItem) => {
+const SidebarItem = ({ icon, label, to, isActive = false, onClick }: SidebarItemProps) => {
   return (
     <Button
       variant={isActive ? "secondary" : "ghost"}
       className={`w-full justify-start gap-3 ${isActive ? "" : "hover:bg-accent/10"}`}
+      asChild
+      onClick={onClick}
     >
-      {icon}
-      <span>{label}</span>
+      <Link to={to}>
+        {icon}
+        <span>{label}</span>
+      </Link>
     </Button>
   );
 };
 
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const isMobile = useIsMobile();
+  const location = useLocation();
+  const currentPath = location.pathname;
   
   return (
     <>
@@ -69,16 +78,52 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           )}
           
           <div className="flex flex-col gap-1.5">
-            <SidebarItem icon={<LayoutDashboard className="h-5 w-5" />} label="Dashboard" isActive />
-            <SidebarItem icon={<FileText className="h-5 w-5" />} label="Notes" />
-            <SidebarItem icon={<Clock className="h-5 w-5" />} label="Pomodoro" />
-            <SidebarItem icon={<Lock className="h-5 w-5" />} label="Password Gen" />
-            <SidebarItem icon={<Palette className="h-5 w-5" />} label="Color Palette" />
-            <SidebarItem icon={<LinkIcon className="h-5 w-5" />} label="URL Shortener" />
+            <SidebarItem 
+              icon={<LayoutDashboard className="h-5 w-5" />} 
+              label="Dashboard" 
+              to="/"
+              isActive={currentPath === '/'} 
+              onClick={isMobile ? onClose : undefined}
+            />
+            <SidebarItem 
+              icon={<FileText className="h-5 w-5" />} 
+              label="Notes" 
+              to="/notes"
+              isActive={currentPath === '/notes'}
+              onClick={isMobile ? onClose : undefined}
+            />
+            <SidebarItem 
+              icon={<Clock className="h-5 w-5" />} 
+              label="Pomodoro" 
+              to="/pomodoro"
+              isActive={currentPath === '/pomodoro'}
+              onClick={isMobile ? onClose : undefined}
+            />
+            <SidebarItem 
+              icon={<Lock className="h-5 w-5" />} 
+              label="Password Gen" 
+              to="/password"
+              isActive={currentPath === '/password'}
+              onClick={isMobile ? onClose : undefined}
+            />
+            <SidebarItem 
+              icon={<Palette className="h-5 w-5" />} 
+              label="Color Palette" 
+              to="/palette"
+              isActive={currentPath === '/palette'}
+              onClick={isMobile ? onClose : undefined}
+            />
+            <SidebarItem 
+              icon={<LinkIcon className="h-5 w-5" />} 
+              label="URL Shortener" 
+              to="/url-shortener"
+              isActive={currentPath === '/url-shortener'}
+              onClick={isMobile ? onClose : undefined}
+            />
           </div>
           
           <div className="mt-auto">
-            <SidebarItem icon={<Settings className="h-5 w-5" />} label="Settings" />
+            <SidebarItem icon={<Settings className="h-5 w-5" />} label="Settings" to="/settings" />
           </div>
         </div>
       </aside>
