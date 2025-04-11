@@ -11,7 +11,7 @@ const Hero = () => {
       <div className="max-w-2xl">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary mb-4">
           <Sparkles className="h-4 w-4" />
-          <span className="text-sm font-medium">Boost your productivity with micro-tools</span>
+          <span className="text-sm font-medium">GRK TRAINING</span>
         </div>
         
         <h1 className="text-4xl font-bold mb-4">All the tools you need <br />in one place</h1>
